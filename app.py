@@ -84,11 +84,120 @@ def main():
     st.markdown("### *De l'analyse des données à l'action préventive*")
 
     # ==============================================================================
+    # STORYTELLING NAVIGATION
+    # ==============================================================================
+
+    st.markdown("""
+    <style>
+    .story-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(90deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        padding: 1rem 2rem;
+        border-radius: 15px;
+        margin: 1rem 0 2rem 0;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .story-step {
+        text-align: center;
+        color: #888;
+        font-size: 0.85rem;
+        position: relative;
+        flex: 1;
+    }
+    .story-step.active {
+        color: #fff;
+    }
+    .story-step .step-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.3rem;
+    }
+    .story-step .step-num {
+        background: #333;
+        color: #888;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        margin-bottom: 0.3rem;
+    }
+    .story-step.active .step-num {
+        background: #e94560;
+        color: white;
+    }
+    .story-line {
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        width: 100%;
+        height: 2px;
+        background: #333;
+        z-index: -1;
+    }
+    </style>
+
+    <div class="story-nav">
+        <div class="story-step active">
+            <div class="step-icon">🎯</div>
+            <div class="step-num">1</div>
+            <div>Problème</div>
+        </div>
+        <div class="story-step active">
+            <div class="step-icon">📊</div>
+            <div class="step-num">2</div>
+            <div>Données</div>
+        </div>
+        <div class="story-step active">
+            <div class="step-icon">🔍</div>
+            <div class="step-num">3</div>
+            <div>Analyse</div>
+        </div>
+        <div class="story-step active">
+            <div class="step-icon">💡</div>
+            <div class="step-num">4</div>
+            <div>Insights</div>
+        </div>
+        <div class="story-step active">
+            <div class="step-icon">🚀</div>
+            <div class="step-num">5</div>
+            <div>Actions</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Intro narrative
+    st.markdown("""
+    <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 2rem;
+                border-radius: 15px;
+                color: white;
+                margin-bottom: 2rem;'>
+        <h2 style='color: white; margin-top: 0;'>📖 Notre histoire commence ici...</h2>
+        <p style='font-size: 1.1rem; line-height: 1.8;'>
+            Chaque jour en France, <strong>150 accidents corporels</strong> se produisent sur nos routes.
+            Derrière ces chiffres, des vies brisées, des familles endeuillées.
+        </p>
+        <p style='font-size: 1.1rem; line-height: 1.8;'>
+            Mais ces accidents ne sont <strong>pas une fatalité</strong>. En analysant les données,
+            nous pouvons comprendre <em>quand</em>, <em>où</em> et <em>pourquoi</em> ils surviennent.
+        </p>
+        <p style='font-size: 1.1rem; line-height: 1.8; margin-bottom: 0;'>
+            <strong>Suivez-nous dans cette exploration</strong> : des constats aux solutions,
+            découvrez comment les données peuvent sauver des vies.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ==============================================================================
     # SECTION 0: PROBLÉMATIQUE
     # ==============================================================================
 
     st.markdown("---")
-    st.header("🎯 Problématique")
+    st.header("🎯 Chapitre 1 : Le Constat")
 
     col1, col2 = st.columns([2, 1])
 
@@ -260,7 +369,7 @@ def main():
     # ==============================================================================
 
     st.markdown("---")
-    st.header("📈 Vue d'ensemble")
+    st.header("📈 Chapitre 2 : Les Données Parlent")
 
     col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -606,40 +715,102 @@ def main():
         st.plotly_chart(fig_deps, use_container_width=True)
 
     # ==============================================================================
-    # SECTION 5: MAP
+    # SECTION 5: MAP WITH ANIMATION
     # ==============================================================================
 
     st.markdown("---")
-    st.header("🗺️ Cartographie des accidents")
+    st.header("🗺️ Chapitre 3 : Cartographie des accidents")
 
-    st.markdown("**Sample de 2000 accidents** pour la performance")
+    st.markdown("""
+    <div style='background-color: #fff3cd; padding: 1rem; border-radius: 0.5rem; border-left: 4px solid #ffc107; margin-bottom: 1rem;'>
+    <b>🎬 Visualisation interactive</b> : Utilisez le slider pour voir l'évolution des accidents mois par mois,
+    ou consultez la carte statique pour une vue d'ensemble.
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Toggle between animated and static map
+    map_type = st.radio(
+        "Type de visualisation",
+        ["📊 Carte statique", "🎬 Animation temporelle"],
+        horizontal=True
+    )
 
     # Sample for performance
-    sample_size = min(2000, len(df_filtered))
-    df_map = df_filtered.sample(n=sample_size, random_state=42)
+    sample_size = min(3000, len(df_filtered))
+    df_map = df_filtered.sample(n=sample_size, random_state=42).copy()
 
-    # Create map
-    fig_map = px.scatter_mapbox(
-        df_map,
-        lat='lat',
-        lon='long',
-        color='categorie_gravite',
-        color_discrete_map=get_color_map(),
-        hover_data={
-            'lat': False,
-            'long': False,
-            'date': True,
-            'dep': True,
-            'lum_desc': True,
-            'nb_tues': True,
-            'nb_blesses_hospitalises': True
-        },
-        zoom=5,
-        height=600,
-        title=f"Localisation de {sample_size} accidents"
-    )
-    fig_map.update_layout(mapbox_style="open-street-map")
-    st.plotly_chart(fig_map, use_container_width=True)
+    if map_type == "🎬 Animation temporelle":
+        st.markdown("### Evolution mois par mois")
+
+        # Prepare data for animation
+        df_map['mois_annee'] = df_map['date'].dt.strftime('%Y-%m')
+        df_map = df_map.sort_values('mois_annee')
+
+        # Create animated map
+        fig_map_anim = px.scatter_mapbox(
+            df_map,
+            lat='lat',
+            lon='long',
+            color='categorie_gravite',
+            color_discrete_map=get_color_map(),
+            animation_frame='mois_nom',
+            category_orders={'mois_nom': ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin',
+                                          'Juillet', 'Aout', 'Septembre', 'Octobre', 'Novembre', 'Decembre']},
+            hover_data={
+                'lat': False,
+                'long': False,
+                'date': True,
+                'dep': True,
+                'lum_desc': True,
+                'nb_tues': True
+            },
+            zoom=4.5,
+            height=650,
+            title="Evolution des accidents au fil des mois"
+        )
+        fig_map_anim.update_layout(
+            mapbox_style="carto-positron",
+            margin={"r":0,"t":40,"l":0,"b":0},
+            updatemenus=[{
+                'type': 'buttons',
+                'showactive': False,
+                'y': 0,
+                'x': 0.1,
+                'xanchor': 'right',
+                'yanchor': 'top',
+                'buttons': [
+                    {'label': '▶ Play', 'method': 'animate', 'args': [None, {'frame': {'duration': 1000, 'redraw': True}, 'fromcurrent': True}]},
+                    {'label': '⏸ Pause', 'method': 'animate', 'args': [[None], {'frame': {'duration': 0, 'redraw': False}, 'mode': 'immediate'}]}
+                ]
+            }]
+        )
+        st.plotly_chart(fig_map_anim, use_container_width=True)
+
+        st.info("💡 **Astuce** : Cliquez sur ▶ Play pour lancer l'animation ou utilisez le slider en bas pour naviguer manuellement.")
+
+    else:
+        # Static map
+        fig_map = px.scatter_mapbox(
+            df_map,
+            lat='lat',
+            lon='long',
+            color='categorie_gravite',
+            color_discrete_map=get_color_map(),
+            hover_data={
+                'lat': False,
+                'long': False,
+                'date': True,
+                'dep': True,
+                'lum_desc': True,
+                'nb_tues': True,
+                'nb_blesses_hospitalises': True
+            },
+            zoom=5,
+            height=600,
+            title=f"Localisation de {sample_size} accidents"
+        )
+        fig_map.update_layout(mapbox_style="open-street-map")
+        st.plotly_chart(fig_map, use_container_width=True)
 
     
 
@@ -648,7 +819,7 @@ def main():
     # ==============================================================================
 
     st.markdown("---")
-    st.header("🔍 Synthèse des découvertes")
+    st.header("💡 Chapitre 4 : Ce que les Données Révèlent")
 
     st.markdown("""
     L'analyse des 54 402 accidents de 2024 révèle des **patterns clairs et récurrents**.
@@ -709,7 +880,7 @@ def main():
     # ==============================================================================
 
     st.markdown("---")
-    st.header("💡 Solutions et Plan d'Action")
+    st.header("🚀 Chapitre 5 : Passer à l'Action")
 
     st.markdown("""
     Sur la base de ces constats, voici un **plan d'action concret et priorisé** pour réduire l'accidentalité
