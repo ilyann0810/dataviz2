@@ -28,7 +28,7 @@ Source : data.gouv.fr - Accidents corporels de la circulation routière
 
 J'ai fusionné, nettoyé et filtré, avec le script prepare_data.py les 4 tables 2024 (caract, lieux, usagers, véhicules) en un seul fichier : `accidents_complet_synthese.csv`. 
 
-- Source : data.gouv.fr (ONISR)
+- Source : [data.gouv.fr (ONISR)](https://www.data.gouv.fr/datasets/bases-de-donnees-annuelles-des-accidents-corporels-de-la-circulation-routiere-annees-de-2005-a-2024)
 - Période : 2024
 - Licence : Licence Ouverte 2.0
 
