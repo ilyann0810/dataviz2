@@ -8,6 +8,8 @@ Ce projet propose une visualisation des données d'accidents corporels issues de
 
 ## Démo en ligne
 
+Repo github : https://github.com/ilyann0810/dataviz2
+
 https://dataviz2-hrtgcdqbwmekjuwmrtib9a.streamlit.app/
 
 ## Installation locale
@@ -20,6 +22,11 @@ streamlit run app.py
 ```
 
 ## Données
+
+
+Source : data.gouv.fr - Accidents corporels de la circulation routière
+
+J'ai fusionné, nettoyé et filtré, avec le script prepare_data.py les 4 tables 2024 (caract, lieux, usagers, véhicules) en un seul fichier : `accidents_complet_synthese.csv`. 
 
 - Source : data.gouv.fr (ONISR)
 - Période : 2024
